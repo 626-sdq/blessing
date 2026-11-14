@@ -1,0 +1,1561 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05081a">
+<meta name="format-detection" content="telephone=no">
+<title>写给正在长大的你</title>
+<style>
+  :root{
+    --ink:#f6efe2;
+    --dim:rgba(246,239,226,.6);
+    --edge:rgba(246,239,226,.22);
+    --gold:255,214,150;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;margin:0}
+  body{
+    position:fixed;inset:0;overflow:hidden;
+    background:#04060f;
+    color:var(--ink);
+    font-family:"Songti SC","Noto Serif SC","Source Han Serif SC","STSong","SimSun",serif;
+    overscroll-behavior:none;
+    touch-action:none;
+  }
+
+  /* ---------- 极光星云：几团缓慢漂移的辉光 ---------- */
+  .aurora{
+    position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+    background:radial-gradient(130% 92% at 50% -10%, #18234f 0%, #0b1233 36%, #050a1a 74%, #03040e 100%);
+  }
+  .aurora i{
+    position:absolute;display:block;border-radius:50%;
+    will-change:transform;
+  }
+  .aurora i:nth-child(1){
+    width:88vw;height:88vw;left:-20vw;top:-14vh;
+    background:radial-gradient(circle at 50% 50%,rgba(104,140,255,.5),rgba(104,140,255,0) 66%);
+    animation:drift1 36s ease-in-out infinite alternate,blobPulse 11s ease-in-out infinite alternate;
+  }
+  .aurora i:nth-child(2){
+    width:74vw;height:74vw;right:-18vw;top:2vh;
+    background:radial-gradient(circle at 50% 50%,rgba(178,116,255,.42),rgba(178,116,255,0) 68%);
+    animation:drift2 44s ease-in-out infinite alternate;
+  }
+  .aurora i:nth-child(3){
+    width:92vw;height:92vw;left:8vw;bottom:-26vh;
+    background:radial-gradient(circle at 50% 50%,rgba(44,196,198,.34),rgba(44,196,198,0) 68%);
+    animation:drift3 52s ease-in-out infinite alternate,blobPulse 15s ease-in-out infinite alternate-reverse;
+  }
+  .aurora i:nth-child(4){
+    width:70vw;height:70vw;right:-12vw;bottom:-18vh;
+    background:radial-gradient(circle at 50% 50%,rgba(255,176,120,.30),rgba(255,176,120,0) 70%);
+    animation:drift4 40s ease-in-out infinite alternate;
+  }
+  @keyframes drift1{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(9vw,5vh,0) scale(1.22)}}
+  @keyframes drift2{from{transform:translate3d(0,0,0) scale(1.08)}to{transform:translate3d(-8vw,9vh,0) scale(.94)}}
+  @keyframes drift3{from{transform:translate3d(0,0,0) scale(.96)}to{transform:translate3d(7vw,-7vh,0) scale(1.16)}}
+  @keyframes drift4{from{transform:translate3d(0,0,0) scale(1.1)}to{transform:translate3d(-6vw,-5vh,0) scale(.95)}}
+  @keyframes blobPulse{from{opacity:.62}to{opacity:1}}
+
+  .haze{
+    position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(58% 32% at 72% 4%, rgba(130,168,255,.16), rgba(0,0,0,0) 70%),
+      radial-gradient(66% 38% at 26% 106%, rgba(255,186,140,.11), rgba(0,0,0,0) 70%);
+    animation:hazeBreathe 22s ease-in-out infinite alternate;
+  }
+  @keyframes hazeBreathe{from{opacity:.5}to{opacity:.95}}
+
+  #sky{position:fixed;inset:0;z-index:2;width:100%;height:100%;display:block}
+  .vignette{
+    position:fixed;inset:0;z-index:3;pointer-events:none;
+    background:radial-gradient(72% 58% at 50% 46%, rgba(0,0,0,0) 38%, rgba(0,0,0,.46) 100%);
+  }
+
+  /* ---------- 内容 ---------- */
+  main{
+    position:relative;z-index:4;height:100%;
+    display:flex;flex-direction:column;align-items:center;
+    padding:calc(env(safe-area-inset-top,0px) + 10vh) 7vw calc(env(safe-area-inset-bottom,0px) + 4.5vh);
+    text-align:center;
+    transition:opacity .45s ease;
+  }
+  #to{
+    font-size:.82rem;letter-spacing:.4em;text-indent:.4em;
+    color:var(--dim);margin:0 0 1.05em;
+  }
+  .rule{
+    width:6px;height:6px;margin-bottom:6.5vh;
+    transform:rotate(45deg);
+    border:1px solid rgba(246,239,226,.5);
+    box-shadow:0 0 18px rgba(var(--gold),.35);
+    animation:rulePulse 5.2s ease-in-out infinite;
+  }
+  @keyframes rulePulse{
+    0%,100%{box-shadow:0 0 12px rgba(var(--gold),.22)}
+    50%{box-shadow:0 0 26px rgba(var(--gold),.5)}
+  }
+
+  #line{
+    flex:1 1 auto;
+    display:flex;align-items:center;justify-content:center;
+    width:100%;max-width:33em;margin:0;
+    transition:opacity .3s ease,filter .3s ease,transform .3s ease;
+  }
+  #line.out{opacity:0;filter:blur(5px);transform:translateY(-6px)}
+  #text{
+    margin:0;width:100%;
+    font-size:clamp(1.42rem,5.6vw,2rem);
+    line-height:1.92;letter-spacing:.03em;
+    text-shadow:0 0 24px rgba(var(--gold),.18),0 0 62px rgba(120,150,255,.16);
+  }
+  #text.long{
+    font-size:clamp(1.02rem,3.7vw,1.26rem);
+    line-height:2.18;letter-spacing:.02em;text-align:left;
+  }
+  .ch{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(10px) scale(.96);
+    animation:chIn .62s cubic-bezier(.2,.72,.2,1) forwards;
+  }
+  @keyframes chIn{
+    to{opacity:1;transform:none}
+  }
+
+  nav{display:flex;gap:.68rem;flex-wrap:wrap;justify-content:center;margin-top:4.6vh}
+  button{
+    font-family:inherit;font-size:.94rem;letter-spacing:.12em;text-indent:.12em;
+    color:var(--ink);
+    background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.042));
+    border:1px solid var(--edge);
+    border-radius:999px;
+    padding:.68em 1.5em;
+    cursor:pointer;
+    box-shadow:0 1px 0 rgba(255,255,255,.09) inset,0 8px 24px rgba(0,0,0,.28);
+    transition:transform .16s cubic-bezier(.2,.8,.2,1),border-color .3s,background .3s,box-shadow .3s;
+  }
+  button:hover{border-color:rgba(246,239,226,.44);box-shadow:0 1px 0 rgba(255,255,255,.16) inset,0 10px 30px rgba(0,0,0,.34)}
+  button:active{transform:scale(.955)}
+  button:focus-visible{outline:2px solid rgba(var(--gold),.6);outline-offset:3px}
+
+  #count{
+    margin:2vh 0 0;height:1.25em;
+    font-size:.78rem;letter-spacing:.2em;
+    color:rgba(var(--gold),0);
+    transition:color .7s ease,opacity .4s;
+  }
+  #count.on{color:rgba(var(--gold),.86)}
+
+  #toast{
+    position:fixed;left:0;right:0;z-index:5;
+    top:calc(env(safe-area-inset-top,0px) + 15vh);
+    margin:0;text-align:center;
+    font-size:.82rem;letter-spacing:.22em;text-indent:.22em;
+    color:rgba(255,226,170,0);
+    pointer-events:none;
+    transition:color .6s ease,transform .6s ease;
+    transform:translateY(6px);
+  }
+  #toast.on{color:rgba(255,226,170,.92);transform:none}
+
+  #hint{
+    margin:auto 0 0;padding-top:3.2vh;
+    display:flex;align-items:center;justify-content:center;gap:.7em;
+    font-size:.84rem;letter-spacing:.16em;
+    color:rgba(246,239,226,.62);
+    text-shadow:0 0 18px rgba(120,150,255,.35);
+    transition:opacity .8s ease;
+  }
+  #hint::before{
+    content:"";width:6px;height:6px;border-radius:50%;flex:none;
+    background:rgba(255,214,150,.9);
+    box-shadow:0 0 10px rgba(255,214,150,.9);
+    animation:hintPulse 1.9s ease-in-out infinite;
+  }
+  @keyframes hintPulse{
+    0%,100%{opacity:.35;transform:scale(.8)}
+    50%{opacity:1;transform:scale(1.15)}
+  }
+  #hint.gone{opacity:.3}
+  #hint.gone::before{animation:none}
+
+  /* 沉浸模式 */
+  body.zen main{opacity:.94}
+  body.zen nav,body.zen #hint,body.zen #count,body.zen #mute,body.zen #help{opacity:0;pointer-events:none}
+  body.zen #to{opacity:.5}
+  body.zen #text{text-shadow:0 0 30px rgba(var(--gold),.24),0 0 80px rgba(120,150,255,.2)}
+
+  #mute{
+    position:fixed;z-index:6;
+    top:calc(env(safe-area-inset-top,0px) + 10px);right:12px;
+    width:38px;height:38px;padding:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1rem;line-height:1;letter-spacing:0;text-indent:0;
+    color:rgba(246,239,226,.78);
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(246,239,226,.18);
+    border-radius:50%;
+    opacity:.72;
+    transition:opacity .3s,color .3s,transform .2s;
+  }
+  #mute[data-on="0"]{opacity:.38}
+  #mute[data-on="0"]::after{
+    content:"";position:absolute;left:9px;right:9px;top:50%;
+    height:1px;background:rgba(246,239,226,.85);transform:rotate(-45deg);
+  }
+
+  #help{
+    position:fixed;z-index:6;
+    top:calc(env(safe-area-inset-top,0px) + 10px);left:12px;
+    width:38px;height:38px;padding:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1rem;line-height:1;letter-spacing:0;text-indent:0;
+    font-family:inherit;
+    color:rgba(246,239,226,.78);
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(246,239,226,.18);
+    border-radius:50%;
+    opacity:.72;
+    transition:opacity .3s,color .3s,transform .2s;
+  }
+
+  /* 入场手势卡 */
+  #guide{
+    position:fixed;inset:0;z-index:7;
+    display:flex;align-items:flex-end;justify-content:center;
+    padding:0 16px calc(env(safe-area-inset-bottom,0px) + 12vh);
+    background:rgba(3,5,14,.58);
+    opacity:0;pointer-events:none;
+    transition:opacity .45s ease;
+  }
+  #guide.on{opacity:1;pointer-events:auto}
+  #guide .panel{
+    width:min(100%,25em);
+    padding:20px 22px 16px;
+    border-radius:22px;
+    background:linear-gradient(180deg,rgba(26,34,68,.97),rgba(12,18,40,.97));
+    border:1px solid rgba(246,239,226,.18);
+    box-shadow:0 26px 70px rgba(0,0,0,.55);
+    transform:translateY(16px);
+    transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  }
+  #guide.on .panel{transform:none}
+  #guide h3{
+    margin:0 0 .7em;font-size:.8rem;font-weight:400;
+    letter-spacing:.28em;text-indent:.28em;color:rgba(255,214,150,.85);
+    text-align:center;
+  }
+  #guide ul{list-style:none;margin:0;padding:0}
+  #guide li{
+    display:flex;align-items:center;gap:.75em;
+    padding:.4em 0;
+    font-size:.9rem;letter-spacing:.03em;
+    color:rgba(246,239,226,.9);
+  }
+  #guide li b{
+    flex:none;width:26px;height:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:400;font-size:.82rem;line-height:1;
+    color:rgba(255,226,170,.95);
+    border:1px solid rgba(255,214,150,.4);
+    box-shadow:0 0 14px rgba(255,214,150,.18) inset;
+  }
+  #guide .foot{
+    margin:14px 0 0;text-align:center;
+    font-size:.72rem;letter-spacing:.2em;text-indent:.2em;
+    color:rgba(246,239,226,.4);
+  }
+
+  @media (min-width:900px){
+    #mute{width:44px;height:44px;font-size:1.1rem;right:20px;top:20px}
+    #help{width:44px;height:44px;font-size:1.1rem;left:20px;top:20px}
+    nav{gap:.9rem}
+    button{font-size:1rem;padding:.72em 1.6em}
+    #hint{letter-spacing:.26em}
+  }
+  body.calm .aurora i,body.calm .haze{animation:none}
+  body.calm .rule{animation:none}
+  #fpsbox{
+    position:fixed;z-index:9;left:8px;top:calc(env(safe-area-inset-top,0px) + 8px);
+    padding:3px 7px;border-radius:6px;
+    font:11px/1.4 ui-monospace,Consolas,monospace;letter-spacing:0;
+    color:rgba(255,214,150,.9);background:rgba(0,0,0,.45);
+    pointer-events:none;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .aurora i,.haze,.rule{animation:none}
+    .ch{animation:none;opacity:1;transform:none;filter:none}
+    #line{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<div class="haze" aria-hidden="true"></div>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<button type="button" id="mute" data-on="1" aria-pressed="true" aria-label="关闭背景音乐">♪</button>
+<button type="button" id="help" aria-label="玩法提示">?</button>
+<div id="guide" aria-hidden="true">
+  <div class="panel">
+    <h3>这几个动作，试试看</h3>
+    <ul>
+      <li><b>✧</b>轻点：光点散成一圈</li>
+      <li><b>⇆</b>左右滑动：换一句</li>
+      <li><b>✦</b>双击：下一场流星雨</li>
+      <li><b>◐</b>长按：界面安静下来</li>
+      <li><b>♡</b>点亮一颗星：24 颗连成心</li>
+    </ul>
+    <p class="foot">点任意处开始</p>
+  </div>
+</div>
+<main>
+  <p id="to">写给正在长大的你</p>
+  <div class="rule" aria-hidden="true"></div>
+  <div id="line" aria-live="polite"><p id="text"></p></div>
+  <nav id="nav">
+    <button type="button" id="next">换一句</button>
+    <button type="button" id="star">点亮一颗星</button>
+  </nav>
+  <p id="count" aria-live="polite"></p>
+  <p id="toast" aria-live="polite"></p>
+  <p id="hint">轻点屏幕，会有光</p>
+</main>
+<noscript><p style="position:fixed;inset:auto 0 40% 0;text-align:center;padding:0 10vw">
+  你现在写的每一道题，都在给未来的自己攒底气。</p></noscript>
+<script>
+/* =========================================================================
+   文案
+   ========================================================================= */
+var LINES = [
+  {t:"你现在写的每一道题，都在给未来的自己攒底气。"},
+  {t:"不用每天都状态很好，只要每天都来。"},
+  {t:"那本翻烂的错题本，比任何誓言都更像承诺。"},
+  {t:"进步常常是偷偷发生的——它先藏进你的笔速里。"},
+  {t:"你不必赢过谁，你只需要比昨天的自己多懂一点。"},
+  {t:"有些努力暂时看不见回音，是因为它正在往深处扎根。"},
+  {t:"一次考试只是把你现在的水平念出来，不是给你下判决。"},
+  {t:"分数会过期，会做题的脑子不会。"},
+  {t:"考砸了不代表你不行，只代表这张卷子告诉了你，下一步该往哪儿补。"},
+  {t:"你怕的不是考试，是“万一不够好”。可你本来就还在长大。"},
+  {t:"成绩单只有一页，你的人生有很多页。"},
+  {t:"别把一次失手，当成对自己的最终评价。"},
+  {t:"撑不住的时候，先睡一觉。清醒的你比硬扛的你更强。"},
+  {t:"累不是软弱，是你在认真活着。"},
+  {t:"允许自己今天只完成一点点——一点点也在往前。"},
+  {t:"你不是机器，你需要的是休息，不是自责。"},
+  {t:"撑不下去的那天，先别想三年后，想想明天早读要背的那一页。"},
+  {t:"慢慢来，比较快。"},
+  {t:"山高路远，但脚在你身上。"},
+  {t:"不必发光，先别熄灭。"},
+  {t:"今天的笨功夫，是明天的底气。"},
+  {t:"你在长大，不在考试。"},
+  {t:"高中这三年，你可能觉得自己一直在被衡量：分数、排名、别人的眼光。但我想告诉你，那些数字量不出你凌晨还在坚持的样子，也量不出你安慰朋友时的温柔。你正在变成一个更结实的人，这件事没有排名。别急，也别怕，你走得比你以为的远。",long:true}
+];
+
+/* =========================================================================
+   工具
+   ========================================================================= */
+var rnd = function (a, b) { return a + Math.random() * (b - a); };
+var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+var reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* 页面是否真的在屏幕上：面板被 display:none、iframe 被折叠成 0×0、
+   窗口被切走，都算「不在」。隐藏时既不该画，也不该响。 */
+function stageVisible() {
+  if (document.hidden) return false;
+  if (!window.innerWidth || !window.innerHeight) return false;
+  var de = document.documentElement;
+  if (!de) return true;
+  var r = de.getBoundingClientRect();
+  return r.width > 2 && r.height > 2;
+}
+
+/* =========================================================================
+   星空引擎：三层视差恒星 + 交互星链 + 光尘 + 流星 + 火花 + 涟漪
+   ========================================================================= */
+var Sky = (function () {
+  "use strict";
+  var cv = document.getElementById("sky");
+  var ctx = cv.getContext("2d");
+  var W = 0, H = 0, DPR = 1;
+  var stars = [], embers = [], meteors = [], sparks = [], rings = [], wishes = [], trailPts = [];
+
+  var sx = 0, sy = 0, tx = 0, ty = 0;   // 视差（平滑 / 目标）
+  var px = -999, py = -999;             // 指针
+  var linkFade = 0;                     // 星链亮度
+  var last = 0, lastPaint = 0, nextMeteor = 2200;
+
+  var glowWarm = null, glowCool = null;
+
+  function sprite(rgb) {
+    var s = 64, c = document.createElement("canvas");
+    c.width = c.height = s;
+    var g = c.getContext("2d");
+    var rg = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+    rg.addColorStop(0, "rgba(" + rgb + ",1)");
+    rg.addColorStop(.16, "rgba(" + rgb + ",.5)");
+    rg.addColorStop(.48, "rgba(" + rgb + ",.1)");
+    rg.addColorStop(1, "rgba(" + rgb + ",0)");
+    g.fillStyle = rg;
+    g.fillRect(0, 0, s, s);
+    return c;
+  }
+
+  /* ---------- 画质档位：2 高 / 1 中 / 0 低 ---------- */
+  var QUALITY = {
+    star: [0.5, 0.75, 1],
+    ember: [0, 0.5, 1],
+    flare: [0, 1, 1],
+    links: [0, 1, 1],
+    dpr: [1, 1.5, 2]
+  };
+  var quality = 2;
+
+  function pickDPR() {
+    var d = Math.min(window.devicePixelRatio || 1, QUALITY.dpr[quality]);
+    var budget = 4.4e6;                       // 画布像素上限，超了就降采样
+    while (d > 1 && W * H * d * d > budget) d = Math.max(1, d - 0.25);
+    return d;
+  }
+
+  function build() {
+    if (!stageVisible()) return;
+    W = cv.clientWidth || window.innerWidth;
+    H = cv.clientHeight || window.innerHeight;
+    if (W < 2 || H < 2) return;
+    DPR = pickDPR();
+    cv.width = Math.round(W * DPR);
+    cv.height = Math.round(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+    var area = W * H;
+    var count = reduceMotion ? 90 : clamp(Math.round(area / 3600), 90, 300) * QUALITY.star[quality];
+
+    stars = [];
+    for (var i = 0; i < count; i++) {
+      var depth = Math.pow(Math.random(), 1.6);      // 多数在远处
+      stars.push({
+        x: rnd(0, W), y: rnd(0, H),
+        r: 0.28 + depth * 1.5,
+        d: depth,
+        a: 0.3 + Math.random() * 0.65,
+        ph: rnd(0, 6.283),
+        sp: rnd(.5, 2.4),
+        big: depth > 0.88 && Math.random() < 0.5,
+        warm: Math.random() < 0.3
+      });
+    }
+
+    embers = [];
+    var em = (reduceMotion ? 12 : clamp(Math.round(W / 15), 18, 40)) * QUALITY.ember[quality];
+    for (var j = 0; j < em; j++) {
+      embers.push({
+        x: rnd(0, W), y: rnd(0, H),
+        vy: rnd(-14, -4), vx: rnd(-4, 4),
+        s: rnd(.6, 1.7), a: rnd(.14, .42),
+        ph: rnd(0, 6.283), sp: rnd(.4, 1.2)
+      });
+    }
+
+    sparks.length = 0;
+    rings.length = 0;
+    meteors.length = 0;
+  }
+
+  function resize() { build(); }
+
+  /* ---------- 粒子发射 ---------- */
+  function burst(x, y, n, power) {
+    n = n || 16; power = power || 1;
+    for (var i = 0; i < n; i++) {
+      var a = Math.random() * 6.283, sp = rnd(24, 150) * power * (Math.random() < .28 ? 1.8 : 1);
+      sparks.push({
+        x: x, y: y,
+        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 16,
+        life: 1, decay: rnd(.5, 1.3) / 1000,
+        s: rnd(.8, 2.5) * Math.min(2, power),
+        c: Math.random() < .45 ? "255,222,164" : (Math.random() < .5 ? "255,255,255" : "255,192,210")
+      });
+    }
+    if (sparks.length > 420) sparks.splice(0, sparks.length - 420);
+  }
+
+  function trail(x, y) {
+    trailPts.push({ x: x + rnd(-1.2, 1.2), y: y + rnd(-1.2, 1.2), t: performance.now() });
+    if (trailPts.length > 90) trailPts.shift();
+    for (var i = 0; i < 2; i++) {
+      sparks.push({
+        x: x + rnd(-2.5, 2.5), y: y + rnd(-2.5, 2.5),
+        vx: rnd(-10, 10), vy: rnd(-20, 4),
+        life: 1, decay: rnd(.8, 1.6) / 1000,
+        s: rnd(.7, 1.8),
+        c: Math.random() < .5 ? "255,238,206" : "198,214,255"
+      });
+    }
+    if (sparks.length > 420) sparks.splice(0, sparks.length - 420);
+  }
+
+  function drawTrail(now) {
+    var life = 620;
+    while (trailPts.length && now - trailPts[0].t > life) trailPts.shift();
+    if (trailPts.length < 2) return;
+    ctx.lineCap = "round";
+    for (var i = 1; i < trailPts.length; i++) {
+      var a = trailPts[i - 1], b = trailPts[i];
+      var k = 1 - (now - b.t) / life;
+      if (k <= 0) continue;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = "rgba(190,210,255," + (k * .1).toFixed(3) + ")";
+      ctx.lineWidth = 6 * k + .6;
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(222,232,255," + (k * .34).toFixed(3) + ")";
+      ctx.lineWidth = 1.3 * k + .2;
+      ctx.stroke();
+    }
+    var head = trailPts[trailPts.length - 1];
+    var hk = 1 - (now - head.t) / life;
+    if (hk > 0) {
+      ctx.globalAlpha = hk * .7;
+      ctx.drawImage(glowCool, head.x - 13, head.y - 13, 26, 26);
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function ring(x, y, r0, r1, c) {
+    rings.push({ x: x, y: y, r: r0 || 4, to: r1 || 90, life: 1, c: c || "255,225,170" });
+  }
+
+  function meteor() {
+    var left = Math.random() < .5;
+    meteors.push({
+      x: left ? rnd(-80, W * .55) : rnd(W * .45, W + 80),
+      y: rnd(-60, H * .5),
+      vx: (left ? 1 : -1) * rnd(320, 620),
+      vy: rnd(150, 320),
+      life: 1, w: rnd(1, 2)
+    });
+  }
+
+  function shower(n) {
+    n = n || 12;
+    for (var i = 0; i < n; i++) {
+      (function (k) {
+        setTimeout(function () { if (!document.hidden) meteor(); }, k * rnd(40, 130));
+      })(i);
+    }
+  }
+
+  /* ---------- 愿星：一颗一颗连成心形星座（只在本次打开有效） ---------- */
+  var WISH_KEY = "blessing.wishes.v1";   // 旧版本存过，这里只用来清掉，不再写入
+  var SLOTS = 24, MAXSTAR = SLOTS * 2;
+
+  function heartPos(k) {
+    var ring = Math.floor(k / SLOTS), i = k % SLOTS;
+    var scale = 1 + ring * 0.1;
+    var t = -Math.PI / 2 + (i / SLOTS) * Math.PI * 2;
+    var hx = 16 * Math.pow(Math.sin(t), 3);
+    var hy = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+    var s = Math.min(W * 0.0205, H * 0.0084) * scale;
+    return { x: W * 0.5 + hx * s, y: H * 0.283 - hy * s };
+  }
+
+  /* 每次打开都从零开始：不读也不写本地存储，重新一颗一颗点亮 */
+  function loadWishes() {
+    wishes = [];
+    try { localStorage.removeItem(WISH_KEY); } catch (e) { }   // 顺手清掉旧版本留下的记录
+  }
+  function addWish() {
+    if (wishes.length >= MAXSTAR) return { full: true, count: wishes.length };
+    var k = wishes.length;
+    wishes.push({ k: k, born: 0 });
+    return { k: k, count: wishes.length, ringDone: k % SLOTS === SLOTS - 1 };
+  }
+  function wishCount() { return wishes.length; }
+
+  function celebrate(from, to) {
+    for (var i = from; i < to; i++) {
+      var p = heartPos(i);
+      burst(p.x, p.y, 5, .5);
+    }
+  }
+
+  /* ---------- 渲染 ---------- */
+  function drawStars(t) {
+    var near = [];
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      var ox = sx * s.d * 22, oy = sy * s.d * 14;
+      var X = ((s.x + ox) % W + W) % W;
+      var Y = ((s.y + oy) % H + H) % H;
+      var tw = .62 + .38 * Math.sin(t * s.sp + s.ph);
+      var a = s.a * tw;
+
+      if (s.big && QUALITY.flare[quality]) {
+        var g = s.warm ? glowWarm : glowCool;
+        ctx.globalAlpha = a * .4;
+        var rad = s.r * 5.4;
+        ctx.drawImage(g, X - rad, Y - rad, rad * 2, rad * 2);
+        ctx.globalAlpha = a * .2;
+        ctx.strokeStyle = s.warm ? "rgba(255,228,180,.9)" : "rgba(200,218,255,.9)";
+        ctx.lineWidth = .7;
+        ctx.beginPath();
+        ctx.moveTo(X - s.r * 6, Y); ctx.lineTo(X + s.r * 6, Y);
+        ctx.moveTo(X, Y - s.r * 6); ctx.lineTo(X, Y + s.r * 6);
+        ctx.stroke();
+      }
+
+      ctx.globalAlpha = a;
+      ctx.fillStyle = s.warm ? "#ffe9c6" : "#f4f7ff";
+      ctx.beginPath();
+      ctx.arc(X, Y, s.r, 0, 6.283);
+      ctx.fill();
+
+      if (linkFade > 0.01 && px > -900 && QUALITY.links[quality]) {
+        var dx = X - px, dy = Y - py, d2 = dx * dx + dy * dy;
+        if (d2 < 19000) near.push({ x: X, y: Y, d: Math.sqrt(d2) });
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    /* 星链：指尖附近的星星连成星座 */
+    if (near.length) {
+      near.sort(function (a, b) { return a.d - b.d; });
+      near = near.slice(0, 6);
+      ctx.lineWidth = .8;
+      for (var k = 0; k < near.length; k++) {
+        var n1 = near[k];
+        var al = (1 - n1.d / 138) * .2 * linkFade;
+        if (al <= 0) continue;
+        ctx.strokeStyle = "rgba(190,214,255," + al.toFixed(3) + ")";
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(n1.x, n1.y);
+        ctx.stroke();
+        for (var m = k + 1; m < near.length; m++) {
+          var n2 = near[m];
+          var dx2 = n1.x - n2.x, dy2 = n1.y - n2.y;
+          if (dx2 * dx2 + dy2 * dy2 > 4900) continue;
+          ctx.strokeStyle = "rgba(190,214,255," + (al * .38).toFixed(3) + ")";
+          ctx.beginPath();
+          ctx.moveTo(n1.x, n1.y);
+          ctx.lineTo(n2.x, n2.y);
+          ctx.stroke();
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function drawWishes(t, dt) {
+    var i, a, b, al;
+
+    /* 先连线：同一圈里相邻的两颗星 */
+    ctx.lineWidth = .8;
+    for (i = 0; i < wishes.length - 1; i++) {
+      var k1 = wishes[i].k, k2 = wishes[i + 1].k;
+      if (Math.floor(k1 / SLOTS) !== Math.floor(k2 / SLOTS)) continue;
+      al = Math.min(wishes[i].born, wishes[i + 1].born) * .15;
+      if (al <= .01) continue;
+      a = heartPos(k1); b = heartPos(k2);
+      ctx.strokeStyle = "rgba(255,226,170," + al.toFixed(3) + ")";
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+
+    /* 再画星 */
+    for (i = 0; i < wishes.length; i++) {
+      var w = wishes[i];
+      if (w.born < 1) w.born = Math.min(1, w.born + dt * 1.6);
+      var p = heartPos(w.k);
+      var X = p.x, Y = p.y;
+      var pulse = .72 + .28 * Math.sin(t * 1.4 + i);
+      var aa = w.born * pulse;
+      var rad = 8 + 5 * (1 - w.born) + 1.6 * Math.sin(t + i);
+      ctx.globalAlpha = aa * .5;
+      ctx.drawImage(i % 2 ? glowWarm : glowCool, X - rad, Y - rad, rad * 2, rad * 2);
+      ctx.globalAlpha = aa;
+      ctx.fillStyle = i % 2 ? "#fff2d6" : "#f2f6ff";
+      ctx.beginPath();
+      ctx.arc(X, Y, 1.9, 0, 6.283);
+      ctx.fill();
+      if (w.born > .55) {
+        var fl = 5.5 + 1.6 * Math.sin(t * 1.1 + i);
+        ctx.globalAlpha = aa * .5;
+        ctx.strokeStyle = i % 2 ? "rgba(255,236,196,.95)" : "rgba(220,232,255,.95)";
+        ctx.lineWidth = .75;
+        ctx.beginPath();
+        ctx.moveTo(X - fl, Y); ctx.lineTo(X + fl, Y);
+        ctx.moveTo(X, Y - fl); ctx.lineTo(X, Y + fl);
+        ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawEmbers(t, dt) {
+    for (var i = 0; i < embers.length; i++) {
+      var e = embers[i];
+      e.y += e.vy * dt;
+      e.x += (e.vx + Math.sin(t * e.sp + e.ph) * 6) * dt;
+
+      if (px > -900) {
+        var dx = e.x - px, dy = e.y - py, d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 74 && d > .01) {
+          e.x += (dx / d) * 42 * dt;
+          e.y += (dy / d) * 42 * dt;
+        }
+      }
+      if (e.y < -12) { e.y = H + 12; e.x = rnd(0, W); }
+      if (e.x < -12) e.x = W + 12;
+      if (e.x > W + 12) e.x = -12;
+
+      ctx.globalAlpha = e.a * (.7 + .3 * Math.sin(t * 1.7 + e.ph));
+      ctx.fillStyle = "rgba(255,222,178,1)";
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.s, 0, 6.283);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawMeteors(dt) {
+    for (var i = meteors.length - 1; i >= 0; i--) {
+      var m = meteors[i];
+      m.x += m.vx * dt;
+      m.y += m.vy * dt;
+      m.life -= dt / 1.5;
+      if (m.life <= 0 || m.x < -240 || m.x > W + 240 || m.y > H + 140) {
+        meteors.splice(i, 1);
+        continue;
+      }
+      var len = 0.11, tx2 = m.x - m.vx * len, ty2 = m.y - m.vy * len;
+      var g = ctx.createLinearGradient(m.x, m.y, tx2, ty2);
+      g.addColorStop(0, "rgba(255,253,246," + Math.max(0, m.life).toFixed(2) + ")");
+      g.addColorStop(.35, "rgba(232,240,255," + (Math.max(0, m.life) * .45).toFixed(2) + ")");
+      g.addColorStop(1, "rgba(232,240,255,0)");
+      ctx.strokeStyle = g;
+      ctx.lineWidth = m.w * .85;
+      ctx.beginPath();
+      ctx.moveTo(m.x, m.y);
+      ctx.lineTo(tx2, ty2);
+      ctx.stroke();
+
+      ctx.globalAlpha = Math.max(0, m.life) * .55;
+      ctx.drawImage(glowCool, m.x - 11, m.y - 11, 22, 22);
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function drawSparks(dt) {
+    for (var i = sparks.length - 1; i >= 0; i--) {
+      var p = sparks[i];
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.vy += 30 * dt;
+      p.vx *= .985;
+      p.life -= p.decay * dt * 1000;
+      if (p.life <= 0) { sparks.splice(i, 1); continue; }
+      ctx.fillStyle = "rgba(" + p.c + "," + (p.life * .95).toFixed(3) + ")";
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.s * p.life, 0, 6.283);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawRings(dt) {
+    for (var i = rings.length - 1; i >= 0; i--) {
+      var r = rings[i];
+      r.r += (r.to - r.r) * Math.min(1, dt * 4.2);
+      r.life -= dt / .95;
+      if (r.life <= 0) { rings.splice(i, 1); continue; }
+      ctx.strokeStyle = "rgba(" + r.c + "," + (r.life * .34).toFixed(3) + ")";
+      ctx.lineWidth = 1 * r.life;
+      ctx.beginPath();
+      ctx.arc(r.x, r.y, r.r, 0, 6.283);
+      ctx.stroke();
+    }
+  }
+
+  /* ---------- 自适应：连续掉帧就降一档 ---------- */
+  var qAcc = 0, qN = 0, qAt = 0, qSlow = 0;
+  function governor(now, rawDt) {
+    if (rawDt > 0 && rawDt < 200) { qAcc += rawDt; qN++; }
+    if (!qAt) { qAt = now; return; }
+    if (now - qAt < 1500) return;
+    var avg = qAcc / Math.max(1, qN);
+    qAt = now; qAcc = 0; qN = 0;
+    if (avg > 24 && quality > 0) { setQuality(quality - 1); qSlow = 0; return; }
+    if (avg > 19 && quality === 2) {
+      if (++qSlow >= 2) { setQuality(1); qSlow = 0; }
+      return;
+    }
+    qSlow = 0;
+  }
+
+  function setQuality(q) {
+    if (q === quality) return;
+    quality = q;
+    document.body.classList.toggle("calm", q < 2);
+    build();
+    if (fpsEl) fpsEl.dataset.q = q;
+  }
+
+  var fpsEl = null, fpsFrames = 0, fpsAt = 0, fpsShown = 0;
+
+  var paused = false;
+
+  function frame(now) {
+    if (!stageVisible()) { paused = true; last = 0; return; }
+    var raw = now - last;
+    var dt = Math.min(64, raw) / 1000;
+    if (!last) { dt = 0.016; raw = 16; }
+    last = now;
+    lastPaint = now;
+    var t = now / 1000;
+    governor(now, raw);
+    if (fpsEl) {
+      fpsFrames++;
+      if (now - fpsAt > 500) {
+        fpsShown = Math.round(fpsFrames * 1000 / (now - fpsAt));
+        fpsAt = now; fpsFrames = 0;
+        fpsEl.textContent = fpsShown + "fps · q" + quality;
+      }
+    }
+
+    sx += (tx - sx) * Math.min(1, dt * 3.2);
+    sy += (ty - sy) * Math.min(1, dt * 3.2);
+    linkFade = Math.max(0, linkFade - dt * .9);
+
+    ctx.clearRect(0, 0, W, H);
+    drawStars(t);
+    drawWishes(t, dt);
+    drawTrail(now);
+    drawEmbers(t, dt);
+    drawMeteors(dt);
+    drawSparks(dt);
+    drawRings(dt);
+
+    if (!reduceMotion) {
+      nextMeteor -= dt * 1000;
+      if (nextMeteor <= 0 && !document.hidden) {
+        meteor();
+        nextMeteor = rnd(3600, 9200);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function point(x, y) {
+    px = x; py = y;
+    linkFade = 1;
+    tx = clamp((x / W - .5) * 2, -1, 1);
+    ty = clamp((y / H - .5) * 2, -1, 1);
+  }
+  function tilt(gx, gy) {
+    tx = clamp(gx, -1, 1);
+    ty = clamp(gy, -1, 1);
+  }
+  function clearPoint() { px = -999; py = -999; linkFade = 0; }
+
+  glowWarm = sprite("255,236,198");
+  glowCool = sprite("206,224,255");
+  loadWishes();
+
+  setInterval(function () {
+    if (paused && stageVisible()) {
+      paused = false;
+      last = 0;
+      requestAnimationFrame(frame);
+    }
+  }, 700);
+
+  var qp = /[?&](low|high)=1/.exec(location.search);
+  if (qp) quality = qp[1] === "low" ? 0 : 2;
+  if (/[?&]fps=1/.test(location.search)) {
+    fpsEl = document.createElement("div");
+    fpsEl.id = "fpsbox";
+    fpsEl.dataset.q = quality;
+    document.body.appendChild(fpsEl);
+  }
+  document.body.classList.toggle("calm", quality < 2);
+  build();
+  requestAnimationFrame(frame);
+
+  return {
+    resize: resize, point: point, tilt: tilt, clearPoint: clearPoint,
+    burst: burst, trail: trail, ring: ring, meteor: meteor, shower: shower,
+    addWish: addWish, wishCount: wishCount, wishPos: heartPos,
+    setQuality: function (q) { setQuality(clamp(q, 0, 2) | 0); },
+    lastPaint: function () { return lastPaint; },
+    quality: function () { return quality; },
+    celebrateRing: function (k) {
+      var from = Math.floor(k / SLOTS) * SLOTS;
+      celebrate(from, Math.min(from + SLOTS, wishes.length));
+    },
+    wishes: function () { return wishes; }
+  };
+})();
+
+/* =========================================================================
+   文案：逐字浮现 / 换句 / 自动轮播
+   ========================================================================= */
+var Stage = (function () {
+  "use strict";
+  var lineEl = document.getElementById("line");
+  var textEl = document.getElementById("text");
+  var toEl = document.getElementById("to");
+  var countEl = document.getElementById("count");
+  var hintEl = document.getElementById("hint");
+
+  var idx = 0, timer = 0, locked = false;
+
+  function personalise() {
+    var name = "";
+    try {
+      var q = new URLSearchParams(location.search);
+      name = (q.get("name") || "").trim();
+      if (!name && location.hash.length > 1) name = (new URLSearchParams(location.hash.slice(1)).get("name") || "").trim();
+    } catch (e) { name = ""; }
+    name = name.replace(/[<>&"'`]/g, "").slice(0, 12);
+    if (name) {
+      document.title = "致 " + name + " · 写给正在长大的你";
+      toEl.textContent = "致 " + name;
+    }
+  }
+
+  function paint(item, originFrac) {
+    textEl.textContent = "";
+    textEl.className = item.long ? "long" : "";
+    var chars = Array.from(item.t);
+    var n = chars.length;
+    var stagger = item.long ? 13 : 26;
+    var from = (typeof originFrac === "number") ? Math.round(originFrac * (n - 1)) : -1;
+    var total = 0;
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < n; i++) {
+      var sp = document.createElement("span");
+      sp.className = "ch";
+      sp.textContent = chars[i];
+      var delay = from >= 0
+        ? Math.abs(i - from) * 13 + Math.random() * 24
+        : i * stagger;
+      if (delay > total) total = delay;
+      sp.style.animationDelay = delay.toFixed(0) + "ms";
+      frag.appendChild(sp);
+    }
+    textEl.appendChild(frag);
+    return total + 780;
+  }
+
+  function show(i) {
+    if (locked) return;
+    locked = true;
+    idx = (i + LINES.length) % LINES.length;
+    var item = LINES[idx];
+    clearTimeout(timer);
+    lineEl.classList.add("out");
+
+    setTimeout(function () {
+      var dur = reduceMotion ? 0 : paint(item);
+      lineEl.classList.remove("out");
+      locked = false;
+      arm(dur + (item.long ? 9000 : 4200));
+    }, reduceMotion ? 0 : 230);
+  }
+
+  function arm(delay) {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      if (locked) { arm(1200); return; }
+      next();
+    }, delay);
+  }
+
+  function next() { show(idx + 1); }
+  function prev() { show(idx - 1); }
+
+  function star() {
+    var res = Sky.addWish();
+    if (res.full) {
+      toast("这颗心已经满了 · " + res.count + " 颗星");
+      return res.count;
+    }
+    countEl.textContent = "你已点亮 " + res.count + " 颗星";
+    countEl.classList.add("on");
+    var p = Sky.wishPos(res.k);
+    Sky.burst(p.x, p.y, 18, 1.05);
+    Sky.ring(p.x, p.y, 6, 70, "255,225,170");
+    if (res.ringDone) {
+      Sky.celebrateRing(res.k);
+      BGM.arp();
+      toast(res.count === 24 ? "你连成了一颗心" : "心又满了一圈 · " + res.count + " 颗星");
+    }
+    return res.count;
+  }
+
+  function replayAt(x) {
+    var item = LINES[idx];
+    if (!item) return;
+    var r = textEl.getBoundingClientRect();
+    var frac = r.width ? clamp((x - r.left) / r.width, 0, 1) : .5;
+    arm(paint(item, frac) + (item.long ? 8000 : 3600));
+  }
+
+  var toastEl = document.getElementById("toast");
+  var toastTimer = 0;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("on"); }, 3400);
+  }
+
+  function initCount() {
+    var n = Sky.wishCount();
+    if (n > 0) {
+      countEl.textContent = "你已点亮 " + n + " 颗星";
+      countEl.classList.add("on");
+    }
+  }
+
+  function nudge() {
+    if (locked) return;
+    arm(6200);
+  }
+
+  function hint(seq) {
+    var i = 0;
+    var step = function () {
+      if (i >= seq.length) { hintEl.classList.add("gone"); return; }
+      hintEl.textContent = seq[i++];
+      setTimeout(step, 4600);
+    };
+    step();
+  }
+
+  return {
+    show: show, next: next, prev: prev, star: star,
+    personalise: personalise, initCount: initCount,
+    nudge: nudge, hint: hint, toast: toast, replayAt: replayAt,
+    index: function () { return idx; }
+  };
+})();
+
+/* =========================================================================
+   背景音乐：Web Audio 现场合成，无音频文件
+   ========================================================================= */
+var BGM = (function () {
+  "use strict";
+  var BPM = 62, BEAT = 60 / BPM, STEP = BEAT / 2;
+  var PROG = [
+    { n: [48, 55, 60, 64, 67, 71] },
+    { n: [47, 55, 59, 62, 67, 71] },
+    { n: [45, 52, 57, 60, 64, 67] },
+    { n: [41, 48, 53, 57, 60, 64] }
+  ];
+  var ARP = [0, 2, 3, 5, 4, 3, 2, 4];
+  var MEL = [
+    [0, 0, 76, 2], [0, 2, 74, 1.5],
+    [1, 1, 79, 2],
+    [2, 0, 81, 1.5], [2, 2, 79, 1],
+    [3, 0, 76, 3],
+    [4, 0, 74, 2], [4, 2, 76, 1],
+    [5, 0, 79, 2], [5, 1.5, 81, 1.5],
+    [6, 0, 84, 2], [6, 2, 81, 2],
+    [7, 0, 79, 4]
+  ];
+  var BARS = 8, LOOP = BARS * 4 * BEAT;
+
+  var embedded = (function () { try { return window.top !== window.self; } catch (e) { return true; } })();
+  var qMusic = /[?&]music=1/.test(location.search);
+  var qMute = /[?&]mute=1/.test(location.search);
+  var ac = null, G = null, playing = false, timer = 0, nextLoopAt = 0;
+  var want = !qMute && (qMusic || !embedded);
+  var live = [], btn = null, lastBlip = 0;
+
+  function mtof(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+  function track(o, end) { live.push({ o: o, end: end }); return o; }
+
+  function events() {
+    var out = [], bar, i;
+    for (bar = 0; bar < BARS; bar++) {
+      var ch = PROG[bar % PROG.length], t0 = bar * 4 * BEAT;
+      for (i = 0; i < 8; i++) {
+        out.push({
+          kind: "arp",
+          t: Math.max(0, t0 + i * STEP + (Math.random() - 0.5) * 0.014),
+          midi: ch.n[ARP[i]],
+          vel: (i % 2 ? 0.42 : 0.56) + Math.random() * 0.06
+        });
+      }
+      out.push({ kind: "pad", t: t0, midi: ch.n[1], dur: 4 * BEAT, vel: 0.5 });
+      out.push({ kind: "pad", t: t0, midi: ch.n[2], dur: 4 * BEAT, vel: 0.44 });
+      out.push({ kind: "pad", t: t0, midi: ch.n[3], dur: 4 * BEAT, vel: 0.36 });
+      out.push({ kind: "bass", t: t0, midi: ch.n[0], dur: 3.4 * BEAT, vel: 0.55 });
+    }
+    for (i = 0; i < MEL.length; i++) {
+      out.push({
+        kind: "mel", t: MEL[i][0] * 4 * BEAT + MEL[i][1] * BEAT,
+        midi: MEL[i][2], dur: MEL[i][3] * BEAT, vel: 0.5
+      });
+    }
+    out.sort(function (a, b) { return a.t - b.t; });
+    return out;
+  }
+
+  function ir(c, sec) {
+    var rate = c.sampleRate, len = Math.floor(rate * sec);
+    var b = c.createBuffer(2, len, rate), k, d, i;
+    for (k = 0; k < 2; k++) {
+      d = b.getChannelData(k);
+      for (i = 0; i < len; i++) {
+        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.4) * Math.min(1, i / 140);
+      }
+    }
+    return b;
+  }
+
+  function graph(c) {
+    var master = c.createGain();
+    master.gain.value = 2;
+    var comp = c.createDynamicsCompressor();
+    comp.threshold.value = -20;
+    comp.knee.value = 24;
+    comp.ratio.value = 3;
+    comp.attack.value = 0.01;
+    comp.release.value = 0.3;
+    var verb = c.createConvolver();
+    verb.buffer = ir(c, 2.4);
+    var wet = c.createGain();
+    wet.gain.value = 0.5;
+    var lp = c.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 2300;
+    verb.connect(lp);
+    lp.connect(wet);
+    wet.connect(master);
+    master.connect(comp);
+    comp.connect(c.destination);
+    return { master: master, verb: verb, wet: wet };
+  }
+
+  function voice(c, g, e, when) {
+    if (!(when >= 0)) when = 0;
+    var f = mtof(e.midi), o1, o2, gn, gn2, snd, a, dec, peak, i, o;
+
+    if (e.kind === "arp" || e.kind === "mel" || e.kind === "bell") {
+      var bell = e.kind !== "arp";
+      peak = e.vel * (bell ? 0.075 : 0.1);
+      a = bell ? 0.01 : 0.006;
+      dec = bell ? 2.9 : 1.9;
+      o1 = track(c.createOscillator(), when + a + dec + 0.05);
+      o1.type = "sine";
+      o1.frequency.value = f;
+      o2 = track(c.createOscillator(), when + a + dec + 0.05);
+      o2.type = "sine";
+      o2.frequency.value = f * (bell ? 2.76 : 2.005);
+      gn = c.createGain();
+      gn2 = c.createGain();
+      gn2.gain.value = bell ? 0.18 : 0.2;
+      o2.connect(gn2);
+      gn2.connect(gn);
+      o1.connect(gn);
+      gn.connect(g.master);
+      snd = c.createGain();
+      snd.gain.value = bell ? 0.6 : 0.42;
+      gn.connect(snd);
+      snd.connect(g.verb);
+      gn.gain.setValueAtTime(0.0001, when);
+      gn.gain.exponentialRampToValueAtTime(peak, when + a);
+      gn.gain.exponentialRampToValueAtTime(0.0001, when + a + dec);
+      o1.start(when);
+      o2.start(when);
+      o1.stop(when + a + dec + 0.05);
+      o2.stop(when + a + dec + 0.05);
+      return;
+    }
+
+    if (e.kind === "pad") {
+      var pad = c.createGain();
+      pad.gain.setValueAtTime(0.0001, when);
+      pad.gain.linearRampToValueAtTime(e.vel * 0.026, when + 0.9);
+      pad.gain.setValueAtTime(e.vel * 0.026, when + Math.max(0.95, e.dur - 0.4));
+      pad.gain.linearRampToValueAtTime(0.0001, when + e.dur + 1.4);
+      var flt = c.createBiquadFilter();
+      flt.type = "lowpass";
+      flt.frequency.value = 820;
+      flt.Q.value = 0.6;
+      flt.connect(pad);
+      pad.connect(g.master);
+      var ps = c.createGain();
+      ps.gain.value = 0.8;
+      pad.connect(ps);
+      ps.connect(g.verb);
+      for (i = 0; i < 2; i++) {
+        o = track(c.createOscillator(), when + e.dur + 1.5);
+        o.type = "sawtooth";
+        o.frequency.value = f;
+        o.detune.value = i ? 5 : -5;
+        o.connect(flt);
+        o.start(when);
+        o.stop(when + e.dur + 1.5);
+      }
+      return;
+    }
+
+    o = track(c.createOscillator(), when + e.dur + 0.1);
+    o.type = "sine";
+    o.frequency.value = f;
+    var bg = c.createGain();
+    bg.gain.setValueAtTime(0.0001, when);
+    bg.gain.linearRampToValueAtTime(e.vel * 0.095, when + 0.04);
+    bg.gain.exponentialRampToValueAtTime(0.0001, when + e.dur);
+    o.connect(bg);
+    bg.connect(g.master);
+    var bs = c.createGain();
+    bs.gain.value = 0.22;
+    bg.connect(bs);
+    bs.connect(g.verb);
+    o.start(when);
+    o.stop(when + e.dur + 0.1);
+  }
+
+  function scheduleLoop(c, g, at) {
+    live = live.filter(function (x) { return x.end > at - 1; });
+    var evs = events(), i;
+    for (i = 0; i < evs.length; i++) voice(c, g, evs[i], at + evs[i].t);
+    return at + LOOP;
+  }
+
+  function tick() {
+    if (!playing || !ac) return;
+    var guard = 0;
+    while (nextLoopAt < ac.currentTime + 5 && guard++ < 3) {
+      nextLoopAt = scheduleLoop(ac, G, nextLoopAt);
+    }
+  }
+
+  function ui() {
+    if (!btn) return;
+    btn.setAttribute("data-on", want ? "1" : "0");
+    btn.setAttribute("aria-pressed", want ? "true" : "false");
+    btn.setAttribute("aria-label", want ? "关闭背景音乐" : "打开背景音乐");
+  }
+
+  function start() {
+    if (!want) return;
+    if (!ac) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      try { ac = new AC(); } catch (err) { return; }
+      G = graph(ac);
+      G.master.gain.value = 0.0001;
+    }
+    if (ac.state === "suspended") ac.resume();
+    if (playing) return;
+    playing = true;
+    nextLoopAt = ac.currentTime + 0.3;
+    G.master.gain.cancelScheduledValues(ac.currentTime);
+    G.master.gain.setValueAtTime(0.0001, ac.currentTime);
+    G.master.gain.linearRampToValueAtTime(2, ac.currentTime + 3.5);
+    tick();
+    clearInterval(timer);
+    timer = setInterval(tick, 800);
+  }
+
+  function stop() {
+    playing = false;
+    clearInterval(timer);
+    timer = 0;
+    for (var i = 0; i < live.length; i++) {
+      try { live[i].o.stop(ac.currentTime + 0.05); } catch (e) { }
+    }
+    live = [];
+    if (!ac) return;
+    G.master.gain.cancelScheduledValues(ac.currentTime);
+    G.master.gain.setValueAtTime(G.master.gain.value, ac.currentTime);
+    G.master.gain.linearRampToValueAtTime(0.0001, ac.currentTime + 0.5);
+    setTimeout(function () { if (!playing && ac) ac.suspend(); }, 700);
+  }
+
+  function toggle() {
+    want = !want;
+    if (want) start(); else stop();
+    ui();
+  }
+
+  function chime() {
+    if (!playing || !ac) return;
+    var notes = [72, 76, 79, 84, 88];
+    voice(ac, G, { kind: "bell", midi: notes[(Math.random() * notes.length) | 0], vel: 0.72 }, ac.currentTime + 0.02);
+  }
+
+  function blip() {
+    if (!playing || !ac) return;
+    var now = performance.now();
+    if (now - lastBlip < 170) return;
+    lastBlip = now;
+    var notes = [84, 86, 88, 91];
+    voice(ac, G, { kind: "bell", midi: notes[(Math.random() * notes.length) | 0], vel: 0.22 }, ac.currentTime + 0.01);
+  }
+
+  function arp() {
+    if (!playing || !ac) return;
+    var seq = [72, 76, 79, 84];
+    for (var i = 0; i < seq.length; i++) {
+      voice(ac, G, { kind: "bell", midi: seq[i], vel: 0.3 }, ac.currentTime + 0.03 + i * 0.085);
+    }
+  }
+
+  function state() {
+    return {
+      playing: playing, want: want, ctx: ac ? ac.state : "none",
+      loop: +LOOP.toFixed(1), clock: ac ? +ac.currentTime.toFixed(1) : 0, nodes: live.length
+    };
+  }
+
+  btn = document.getElementById("mute");
+  if (btn) {
+    btn.addEventListener("click", function (e) { e.stopPropagation(); toggle(); });
+    ui();
+  }
+
+  document.addEventListener("visibilitychange", function () {
+    if (!stageVisible() && playing) stop();
+  });
+
+  /* 看门狗：页面已不在屏幕上（面板收起、iframe 被隐藏、窗口被切走），
+     声音必须跟着停，不能留在对话框里继续响。 */
+  setInterval(function () {
+    if (playing && !stageVisible()) stop();
+  }, 700);
+
+  /* 页面被卸载 / 冻结时立刻断音 */
+  window.addEventListener("pagehide", function () { playing = false; clearInterval(timer); timer = 0; });
+  window.addEventListener("beforeunload", function () { playing = false; clearInterval(timer); timer = 0; });
+  document.addEventListener("freeze", function () { if (playing) stop(); });
+
+  /* 焦点离开这个页面（点回对话框、切到别的窗口）也停，别让声音留在背后 */
+  window.addEventListener("blur", function () {
+    setTimeout(function () { if (playing) stop(); }, 700);
+  });
+
+  return { start: start, stop: stop, toggle: toggle, chime: chime, blip: blip, arp: arp, state: state };
+})();
+
+/* =========================================================================
+   手势与交互
+   ========================================================================= */
+(function () {
+  "use strict";
+  var hintEl = document.getElementById("hint");
+  var down = false, moved = false, downX = 0, downY = 0, downT = 0;
+  var lastTapT = 0, lastTapX = 0, lastTapY = 0;
+  var lpTimer = 0, trailAt = 0, zen = false;
+
+  function vibe(ms) { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) { } }
+
+  function zenToggle() {
+    zen = !zen;
+    document.body.classList.toggle("zen", zen);
+    vibe(10);
+    hintEl.textContent = zen ? "长按屏幕，回到默认" : "轻点屏幕，会有光";
+    hintEl.classList.remove("gone");
+    clearTimeout(hintEl._t);
+    hintEl._t = setTimeout(function () { if (!zen) hintEl.classList.add("gone"); }, 4200);
+  }
+
+  function tap(x, y) {
+    Sky.burst(x, y, 13, .95);
+    Sky.ring(x, y, 3, 52, "210,220,255");
+    BGM.blip();
+  }
+
+  function doubleTap(x, y) {
+    Sky.shower(14);
+    Sky.ring(x, y, 6, 150, "255,225,170");
+    BGM.arp();
+    vibe(12);
+  }
+
+  function onDown(e) {
+    if (document.body.classList.contains("guiding")) return;
+    BGM.start();
+    Stage.nudge();
+    down = true; moved = false;
+    downX = e.clientX; downY = e.clientY; downT = performance.now();
+    Sky.point(e.clientX, e.clientY);
+    clearTimeout(lpTimer);
+    lpTimer = setTimeout(function () {
+      if (down && !moved) { zenToggle(); down = false; }
+    }, 620);
+  }
+
+  function onMove(e) {
+    Sky.point(e.clientX, e.clientY);
+    if (!down) return;
+    var dx = e.clientX - downX, dy = e.clientY - downY;
+    if (!moved && Math.abs(dx) + Math.abs(dy) > 8) moved = true;
+    if (moved) {
+      var now = performance.now();
+      if (now - trailAt > 26) { trailAt = now; Sky.trail(e.clientX, e.clientY); }
+    }
+  }
+
+  function onUp(e) {
+    clearTimeout(lpTimer);
+    if (!down) return;
+    down = false;
+    var dx = e.clientX - downX, dy = e.clientY - downY;
+    var dur = performance.now() - downT;
+
+    if (moved) {
+      if (Math.abs(dx) > 54 && Math.abs(dy) < 70 && dur < 900) {
+        if (dx < 0) Stage.next(); else Stage.prev();
+      }
+      return;
+    }
+    if (dur > 620) return;
+
+    var now = performance.now();
+    if (now - lastTapT < 300 && Math.abs(e.clientX - lastTapX) < 46 && Math.abs(e.clientY - lastTapY) < 46) {
+      lastTapT = 0;
+      doubleTap(e.clientX, e.clientY);
+    } else {
+      lastTapT = now; lastTapX = e.clientX; lastTapY = e.clientY;
+      tap(e.clientX, e.clientY);
+      var tag = e.target;
+      if (tag && tag.closest && tag.closest(".ch")) Stage.replayAt(e.clientX);
+    }
+  }
+
+  document.addEventListener("pointerdown", onDown, { passive: true });
+  document.addEventListener("pointermove", onMove, { passive: true });
+  document.addEventListener("pointerup", onUp, { passive: true });
+  document.addEventListener("pointercancel", function () { down = false; clearTimeout(lpTimer); });
+  document.addEventListener("pointerleave", function () { Sky.clearPoint(); });
+
+  document.getElementById("next").addEventListener("click", function (e) {
+    e.stopPropagation();
+    Stage.nudge();
+    Stage.next();
+  });
+
+  document.getElementById("star").addEventListener("click", function (e) {
+    e.stopPropagation();
+    Stage.nudge();
+    Stage.star();
+    BGM.chime();
+    vibe(8);
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === " " || e.key === "ArrowRight") { Stage.nudge(); Stage.next(); }
+    else if (e.key === "ArrowLeft") { Stage.nudge(); Stage.prev(); }
+    else if (e.key === "m" || e.key === "M") BGM.toggle();
+    else if (e.key === "Escape" || e.key === "z" || e.key === "Z") zenToggle();
+  });
+
+  /* 手机倾斜视差 */
+  if (window.DeviceOrientationEvent && !reduceMotion) {
+    var onTilt = function (ev) {
+      if (ev.gamma == null && ev.beta == null) return;
+      Sky.tilt(clamp((ev.gamma || 0) / 32, -1, 1), clamp(((ev.beta || 45) - 45) / 32, -1, 1));
+    };
+    var ask = function () {
+      var D = window.DeviceOrientationEvent;
+      if (D && typeof D.requestPermission === "function") {
+        D.requestPermission().then(function (res) {
+          if (res === "granted") window.addEventListener("deviceorientation", onTilt, true);
+        }).catch(function () { });
+      } else {
+        window.addEventListener("deviceorientation", onTilt, true);
+      }
+    };
+    document.addEventListener("pointerdown", ask, { once: true, passive: true });
+  }
+
+  window.addEventListener("resize", function () { Sky.resize(); });
+  window.addEventListener("orientationchange", function () { setTimeout(Sky.resize, 150); });
+})();
+
+/* =========================================================================
+   玩法提示：入场手势卡 + 常驻帮助按钮
+   ========================================================================= */
+(function () {
+  "use strict";
+  var guide = document.getElementById("guide");
+  var help = document.getElementById("help");
+  if (!guide) return;
+
+  var open = false, timer = 0;
+  var seen = false;
+  try { seen = sessionStorage.getItem("blessing.guide") === "1"; } catch (e) { }
+
+  function show() {
+    if (open) return;
+    try { sessionStorage.setItem("blessing.guide", "1"); } catch (e) { }
+    open = true;
+    guide.classList.add("on");
+    guide.setAttribute("aria-hidden", "false");
+    document.body.classList.add("guiding");
+    clearTimeout(timer);
+    timer = setTimeout(hide, 7000);
+  }
+
+  function hide() {
+    if (!open) return;
+    open = false;
+    guide.classList.remove("on");
+    guide.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("guiding");
+    clearTimeout(timer);
+  }
+
+  /* 点的第一下只负责关卡片，不触发后面的光点/音乐 */
+  document.addEventListener("pointerdown", function (e) {
+    if (!open) return;
+    e.stopPropagation();
+    if (e.cancelable) e.preventDefault();
+    hide();
+  }, true);
+
+  if (help) {
+    help.addEventListener("click", function (e) {
+      e.stopPropagation();
+      show();
+    });
+  }
+
+  if (!seen) setTimeout(show, 1100);
+})();
+
+/* =========================================================================
+   启动
+   ========================================================================= */
+(function () {
+  Stage.personalise();
+  Stage.initCount();
+  Stage.show(0);
+  Stage.hint([
+    "轻点屏幕，会有光",
+    "左右滑动，换一句",
+    "双击，下一场流星雨",
+    "点一下句子，它重新亮起",
+    "长按，让界面安静下来"
+  ]);
+})();
+</script>
+</body>
+</html>
